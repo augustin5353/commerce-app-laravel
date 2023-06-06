@@ -11,8 +11,7 @@ models:
     quantity: integer unsigned
     stock_location: string:100
     stock_status: boolean default:true
-    relationships:
-      hasMany: Product
+
   Discount:
     softDeletes
     name: string:100 
