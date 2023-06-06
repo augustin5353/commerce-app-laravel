@@ -1,0 +1,81 @@
+models:
+  Category:
+    softDeletes
+    name: string:200
+    description: longtext
+    relationships:
+      hasMany: Product
+
+  Inventory:
+    softDeletes
+    quantity: integer unsigned
+    stock_location: string:100
+    stock_status: boolean default:true
+    relationships:
+      hasMany: Product
+  Discount:
+    softDeletes
+    name: string:100 
+    description: string:200
+    active: boolean default:true
+    relationships:
+      hasMany: Product
+
+  Product:
+    softDeletes
+    name: string:100
+    description: string:200
+    sku: string:8 unique
+    price: integer:12
+    category_id: id foreign 
+    inventory_id: id foreign 
+    discount_id: id foreign 
+    relationships:
+      belongTo: Category
+      belongTo: Inventory
+
+controllers:
+  Category:
+    index:
+     query: all
+     render: categories.index with:categories
+    create:
+      render: categories.edit with:category
+    store:
+      validate: name, description
+      save: category
+      redirect: category.index
+    edit:
+      render: categories.edit with:category
+    delete: Category
+
+  Inventory:
+    index:
+     query: all
+     render: inventories.index with:inventories
+    create:
+      render: inventories.edit with:category
+    store:
+      validate: quantity, stock_location, stock_status
+      save: inventory
+      redirect: inventory.index
+    edit:
+      render: inventories.edit with:inventory
+    delete: Inventory
+
+  Product:
+    index:
+     query: all
+     render: products.index with:products
+    create:
+      render: products.edit with:product
+    store:
+      validate: name, description, sku, price
+      save: product
+      redirect: products.index
+    edit:
+      render: products.edit with:product
+    delete: Product
+
+
+#https://www.youtube.com/watch?v=cZqFD2c50tI
